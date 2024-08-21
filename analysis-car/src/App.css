@@ -1,42 +1,61 @@
+/* Root container styling */
 #root {
   max-width: 1280px;
   margin: 0 auto;
-  padding: 2rem;
+  padding-top: 4rem; /* Adjust padding to prevent overlap with navbar */
   text-align: center;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+/* Fixed Navbar Styles */
+.navbar {
+  position: fixed; /* Fixed position to stay at the top */
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  padding: 1rem 0;
+  background-color: #f8f8f8;
+  border-bottom: 1px solid #e0e0e0;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Add shadow to make the navbar stand out */
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
+/* Navigation link styles */
+.nav-link {
+  text-decoration: none;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #333;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.nav-link:hover {
+  background-color: #007BFF;
+  color: white;
+}
+
+/* Main Content */
+.content {
+  margin-top: 2rem; /* Additional margin to separate content from navbar */
+  padding: 1rem;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  #root {
+    padding-top: 6rem; /* Adjust padding for mobile view */
   }
-  to {
-    transform: rotate(360deg);
+
+  .navbar {
+    flex-direction: column;
+    gap: 10px;
   }
-}
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
+  .nav-link {
+    font-size: 1rem;
   }
-}
-
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
 }
