@@ -1,12 +1,12 @@
 import React from 'react';
 
 const CarTable = ({ data }) => (
-    <table>
-        <thead>
+    <table className="table table-striped table-hover">
+        <thead className="table-dark">
             <tr>
-                <th>Brand</th>
-                <th>Number of Cars</th>
-                <th>Total Value (Baht)</th>
+                <th scope="col">Brand</th>
+                <th scope="col">Number of Cars</th>
+                <th scope="col">Total Value (Baht)</th>
             </tr>
         </thead>
         <tbody>
