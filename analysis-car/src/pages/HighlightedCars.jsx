@@ -1,15 +1,146 @@
-// src/pages/HighlightedCars.jsx
-import React from 'react';
+import { useState, useEffect } from 'react';
+import carData from './taladrod-cars.json';
+import './HighlightedCars.css'; // Import styles for the modal
 
 function HighlightedCars() {
+  const [highlightedCars, setHighlightedCars] = useState([]);
+  const [showCarSelection, setShowCarSelection] = useState(false);
+  const [error, setError] = useState(null);
+
+  // Load highlighted cars from localStorage
+  useEffect(() => {
+    try {
+      const storedCars = localStorage.getItem('highlightedCars');
+      if (storedCars) {
+        setHighlightedCars(JSON.parse(storedCars));
+      }
+    } catch (err) {
+      setError('Could not load highlighted cars.');
+    }
+  }, []);
+
+  // Save highlighted cars to localStorage whenever they change
+  useEffect(() => {
+    try {
+      localStorage.setItem('highlightedCars', JSON.stringify(highlightedCars));
+    } catch (err) {
+      setError('Could not save highlighted cars.');
+    }
+  }, [highlightedCars]);
+
+  // Function to add a car to highlighted cars
+  const addCarToHighlight = (car) => {
+    setHighlightedCars((prevCars) => {
+      if (!prevCars.some((highlightedCar) => highlightedCar.Cid === car.Cid)) {
+        return [...prevCars, car];
+      }
+      return prevCars;
+    });
+    setShowCarSelection(false);  // Hide modal after adding a car
+  };
+
+  // Function to remove a car from highlighted cars
+  const removeCarFromHighlight = (carId) => {
+    setHighlightedCars((prevCars) => prevCars.filter(car => car.Cid !== carId));
+  };
+
+  // Function to remove all cars from highlighted cars
+  const removeAllCars = () => {
+    setHighlightedCars([]);
+  };
+
+  // Close the modal
+  const closeModal = () => {
+    setShowCarSelection(false);
+  };
+
+  // Error handling for invalid carData
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
+
   return (
-    <div>
-      <h1>Highlighted Cars</h1>
-      {/* Add your highlighted cars content here */}
+    <div className="container">
+      <h2>Highlighted Cars</h2>
+
+      {/* Buttons to remove all and add cars */}
+      <button className="remove-all-button" onClick={removeAllCars}>Remove All</button>
+      <button className="add-button" onClick={() => setShowCarSelection(true)}>Add</button>
+
+      {/* Highlighted cars list */}
+      <div className="table-container">
+        {highlightedCars.length > 0 ? (
+          <table>
+            <thead>
+              <tr>
+                <th>Image</th>
+                <th>Name</th>
+                <th>Price</th>
+                <th>Delete</th>
+              </tr>
+            </thead>
+            <tbody>
+              {highlightedCars.map(car => (
+                <tr key={car.Cid}>
+                  <td><img src={car.Img100} alt={car.NameMMT} width="50" /></td>
+                  <td>{car.NameMMT}</td>
+                  <td>{car.Prc}</td>
+                  <td>
+                    <button onClick={() => removeCarFromHighlight(car.Cid)}>Remove</button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        ) : (
+          <>
+            <div style={{ height: '20px' }}></div> {/* Blank line */}
+            <p>No highlighted cars yet.</p>
+          </>
+        )}
+      </div>
+
+      {/* Car selection modal */}
+      {showCarSelection && (
+        <div className="modal-overlay" onClick={closeModal}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <button className="close-button" onClick={closeModal}>X</button>
+            <h3>Select Cars to Highlight</h3>
+            <div className="table-container">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Image</th>
+                    <th>Name</th>
+                    <th>Price</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {Array.isArray(carData.Cars) ? (
+                    carData.Cars.map(car => (
+                      <tr key={car.Cid}>
+                        <td><img src={car.Img100} alt={car.NameMMT} width="50" /></td>
+                        <td>{car.NameMMT}</td>
+                        <td>{car.Prc}</td>
+                        <td>
+                          <button onClick={() => addCarToHighlight(car)}>Highlight</button>
+                        </td>
+                      </tr>
+                    ))
+                  ) : (
+                    <tr>
+                      <td colSpan="4">Car data is not available or not in the correct format.</td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
 
 export default HighlightedCars;
-
-// yeah
