@@ -6,6 +6,7 @@ function HighlightedCars() {
   const [highlightedCars, setHighlightedCars] = useState([]);
   const [showCarSelection, setShowCarSelection] = useState(false);
   const [error, setError] = useState(null);
+  const [searchQuery, setSearchQuery] = useState(''); // Added search query state
 
   // Load highlighted cars from localStorage
   useEffect(() => {
@@ -54,6 +55,11 @@ function HighlightedCars() {
     setShowCarSelection(false);
   };
 
+  // Filter cars based on search query
+  const filteredCars = carData.Cars.filter(car =>
+    car.NameMMT.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   // Error handling for invalid carData
   if (error) {
     return <div>Error: {error}</div>;
@@ -76,7 +82,7 @@ function HighlightedCars() {
                 <th>Image</th>
                 <th>Name</th>
                 <th>Price</th>
-                <th>Delete</th>
+                <th> </th>
               </tr>
             </thead>
             <tbody>
@@ -106,6 +112,13 @@ function HighlightedCars() {
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
             <button className="close-button" onClick={closeModal}>X</button>
             <h3>Select Cars to Highlight</h3>
+            <input
+              type="text"
+              className="form-control mb-4"
+              placeholder="Search by name..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
             <div className="table-container">
               <table>
                 <thead>
@@ -113,12 +126,12 @@ function HighlightedCars() {
                     <th>Image</th>
                     <th>Name</th>
                     <th>Price</th>
-                    <th>Action</th>
+                    <th> </th>
                   </tr>
                 </thead>
                 <tbody>
-                  {Array.isArray(carData.Cars) ? (
-                    carData.Cars.map(car => (
+                  {Array.isArray(filteredCars) && filteredCars.length > 0 ? (
+                    filteredCars.map(car => (
                       <tr key={car.Cid}>
                         <td><img src={car.Img100} alt={car.NameMMT} width="50" /></td>
                         <td>{car.NameMMT}</td>
@@ -130,7 +143,7 @@ function HighlightedCars() {
                     ))
                   ) : (
                     <tr>
-                      <td colSpan="4">Car data is not available or not in the correct format.</td>
+                      <td colSpan="4">No cars match your search criteria.</td>
                     </tr>
                   )}
                 </tbody>

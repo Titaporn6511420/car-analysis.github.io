@@ -5,6 +5,7 @@ import carData from './taladrod-cars.json'; // Adjust the path as needed
 
 const Dashboard = () => {
   const [cars, setCars] = useState([]);
+  const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
     // Set cars directly from the imported JSON data
@@ -36,58 +37,74 @@ const Dashboard = () => {
     return acc;
   }, {});
 
-  const brandLabels = Object.keys(processedCarData);
-  const brandCounts = brandLabels.map(brand => processedCarData[brand].totalCars);
-  const brandValues = brandLabels.map(brand => processedCarData[brand].totalValue);
+  // Filter brands based on search query
+  const filteredBrandLabels = Object.keys(processedCarData).filter(brand =>
+    brand.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
-  const tableRows = brandLabels.map((brand, index) => (
-    <React.Fragment key={index}>
-      <tr>
+  const filteredBrandCounts = filteredBrandLabels.map(brand => processedCarData[brand].totalCars);
+  const filteredBrandValues = filteredBrandLabels.map(brand => processedCarData[brand].totalValue);
+
+  const tableRows = filteredBrandLabels.flatMap((brand, index) => [
+    // Row for the brand totals
+    <tr key={`${brand}-total`}>
+      <td>{brand}</td>
+      <td><strong>Total</strong></td>
+      <td><strong>{processedCarData[brand].totalCars}</strong></td>
+      <td><strong>{processedCarData[brand].totalValue.toLocaleString()} Baht</strong></td>
+    </tr>,
+    // Rows for the individual models
+    ...Object.keys(processedCarData[brand].models).map((model, modelIndex) => (
+      <tr key={`${brand}-${modelIndex}`}>
         <td>{brand}</td>
-        <td>{processedCarData[brand].totalCars}</td>
-        <td>{processedCarData[brand].totalValue.toLocaleString()} Baht</td>
+        <td>{model}</td>
+        <td>{processedCarData[brand].models[model].count}</td>
+        <td>{processedCarData[brand].models[model].value.toLocaleString()} Baht</td>
       </tr>
-      {Object.keys(processedCarData[brand].models).map((model, modelIndex) => (
-        <tr key={modelIndex} className="pl-4">
-          <td>&nbsp;&nbsp;&nbsp;{brand} / {model}</td>
-          <td>{processedCarData[brand].models[model].count}</td>
-          <td>{processedCarData[brand].models[model].value.toLocaleString()} Baht</td>
-        </tr>
-      ))}
-    </React.Fragment>
-  ));
+    )),
+  ]);
 
   const pieChartData = {
-    labels: brandLabels,
+    labels: filteredBrandLabels,
     datasets: [
       {
-        data: brandCounts,
+        data: filteredBrandCounts,
         backgroundColor: [
-          '#FF6384',
-          '#36A2EB',
-          '#FFCE56',
-          '#4BC0C0',
-          '#9966FF',
-          '#FF9F40',
+          '#F4A3D1',
+          '#97E3DE',
+          '#F8E877',
+          '#FF6767',
+          '#C785E3',
+          '#97D1F7',
         ],
       },
     ],
   };
 
   const colors = [
-    'rgba(122, 223, 207, 0.6)', // Color 1
-    'rgba(255, 195, 0, 0.6)',   // Color 2
-    'rgba(218, 247, 166, 0.6)',  // Color 3
-    'rgba(150, 200, 236, 0.6)'   // Color 4
+    'rgba(122, 223, 207)', // Color 1
+    'rgba(255, 195, 0)',   // Color 2
+    'rgba(218, 247, 166)',  // Color 3
+    'rgba(150, 200, 236)',  // Color 4
+    'rgba(244, 163, 209)',
   ];
 
   const stackedBarChartData = {
-    labels: brandLabels,
-    datasets: brandLabels.map((brand, index) => ({
+    labels: filteredBrandLabels,
+    datasets: filteredBrandLabels.map((brand, index) => ({
       label: brand,
       data: Object.keys(processedCarData[brand].models).map(model => processedCarData[brand].models[model].count),
       backgroundColor: colors[index % colors.length],
     })),
+  };
+
+  const barChartOptions = {
+    maintainAspectRatio: false, // Allow chart to resize based on container size
+    responsive: true,
+    scales: {
+      x: { stacked: true },
+      y: { stacked: true }
+    },
   };
 
   return (
@@ -96,13 +113,21 @@ const Dashboard = () => {
       <div className="row">
         <div className="col-md-12">
           <h3>Number of Cars and Values by Brands and Models</h3>
-          <div className="table-responsive"> {/* Ensure table is responsive */}
+          <input
+            type="text"
+            className="form-control mb-4"
+            placeholder="Search by brand..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+          <div className="table-container" style={{ maxHeight: '500px', overflowY: 'auto' }}> {/* Container with fixed height */}
             <table className="table table-striped">
               <thead>
                 <tr>
-                  <th>Brand / Model</th>
+                  <th>Brand</th>
+                  <th>Model</th>
                   <th>Number of Cars</th>
-                  <th>Total Value (Baht)</th>
+                  <th>Price (Baht)</th>
                 </tr>
               </thead>
               <tbody>
@@ -112,16 +137,18 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
-      <div className="row mt-5">
-        <div className="col-md-6">
+      <div className="row mt-5 justify-content-center">
+        <div className="col-md-6 d-flex flex-column align-items-center">
           <h3>Portion of Cars by Brand (Pie Chart)</h3>
           <Pie data={pieChartData} />
         </div>
       </div>
-      <div className="row mt-5">
-        <div className="col-md-6">
+      <div className="row mt-5 justify-content-center">
+        <div className="col-md-6 d-flex flex-column align-items-center" style={{ height: '500px' }}> {/* Container with fixed height */}
           <h3>Models of a Brand (Stacked Bar Chart)</h3>
-          <Bar data={stackedBarChartData} options={{ scales: { x: { stacked: true }, y: { stacked: true } } }} />
+          <div style={{ width: '150%', height: '200%' }}>
+            <Bar data={stackedBarChartData} options={barChartOptions} />
+          </div>
         </div>
       </div>
     </div>

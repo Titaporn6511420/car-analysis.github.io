@@ -1,8 +1,7 @@
-import { useState } from 'react'
-import './App.css'
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import Dashboard from './pages/Dashboard';
 import HighlightedCars from './pages/HighlightedCars';
+import './App.css'; // Import the updated CSS
 
 function App() {
   return (
@@ -22,6 +21,4 @@ function App() {
   );
 }
 
-export default App
-
-// fight
+export default App;
