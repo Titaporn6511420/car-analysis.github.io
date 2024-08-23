@@ -1,35 +1,18 @@
 import { useState, useEffect } from 'react';
 import carData from './taladrod-cars.json';
-import './HighlightedCars.css'; // Import styles for the modal
+import './HighlightedCars.css';
 
 function HighlightedCars() {
   const [highlightedCars, setHighlightedCars] = useState([]);
   const [showCarSelection, setShowCarSelection] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
   const [error, setError] = useState(null);
-  const [searchQuery, setSearchQuery] = useState(''); // Added search query state
 
   // Load highlighted cars from localStorage
-  useEffect(() => {
-    try {
-      const storedCars = localStorage.getItem('highlightedCars');
-      if (storedCars) {
-        setHighlightedCars(JSON.parse(storedCars));
-      }
-    } catch (err) {
-      setError('Could not load highlighted cars.');
-    }
-  }, []);
 
   // Save highlighted cars to localStorage whenever they change
-  useEffect(() => {
-    try {
-      localStorage.setItem('highlightedCars', JSON.stringify(highlightedCars));
-    } catch (err) {
-      setError('Could not save highlighted cars.');
-    }
-  }, [highlightedCars]);
 
-  // Function to add a car to highlighted cars
+  // Add car to highlighted list
   const addCarToHighlight = (car) => {
     setHighlightedCars((prevCars) => {
       if (!prevCars.some((highlightedCar) => highlightedCar.Cid === car.Cid)) {
@@ -37,30 +20,29 @@ function HighlightedCars() {
       }
       return prevCars;
     });
-    setShowCarSelection(false);  // Hide modal after adding a car
+    setShowCarSelection(false);
   };
 
-  // Function to remove a car from highlighted cars
+  // Remove car from highlighted list
   const removeCarFromHighlight = (carId) => {
     setHighlightedCars((prevCars) => prevCars.filter(car => car.Cid !== carId));
   };
 
-  // Function to remove all cars from highlighted cars
+  // Remove all cars from highlighted list
   const removeAllCars = () => {
     setHighlightedCars([]);
   };
 
-  // Close the modal
+  // Close the car selection modal
   const closeModal = () => {
     setShowCarSelection(false);
   };
 
-  // Filter cars based on search query
-  const filteredCars = carData.Cars.filter(car =>
+  // Filter highlighted cars based on search query
+  const filteredCars = highlightedCars.filter(car =>
     car.NameMMT.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  // Error handling for invalid carData
   if (error) {
     return <div>Error: {error}</div>;
   }
@@ -69,24 +51,36 @@ function HighlightedCars() {
     <div className="container">
       <h2>Highlighted Cars</h2>
 
-      {/* Buttons to remove all and add cars */}
-      <button className="remove-all-button" onClick={removeAllCars}>Remove All</button>
-      <button className="add-button" onClick={() => setShowCarSelection(true)}>Add</button>
+      {/* Control Buttons */}
+      <div className="control-buttons" style={{ marginBottom: '20px' }}>
+        <button className="remove-all-button" style={{marginRight:'20px'}} onClick={removeAllCars}>Remove All</button>
+        <button className="add-button" onClick={() => setShowCarSelection(true)}>Add</button>
+      </div>
 
-      {/* Highlighted cars list */}
+      {/* Search Bar */}
+      <input
+        type="text"
+        className="form-control mb-4"
+        style={{ marginTop: '10px' }}
+        placeholder="Search highlighted cars..."
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
+      />
+
+      {/* Highlighted Cars Table */}
       <div className="table-container">
-        {highlightedCars.length > 0 ? (
+        {filteredCars.length > 0 ? (
           <table>
             <thead>
               <tr>
                 <th>Image</th>
                 <th>Name</th>
                 <th>Price</th>
-                <th> </th>
+                <th>Actions</th>
               </tr>
             </thead>
             <tbody>
-              {highlightedCars.map(car => (
+              {filteredCars.map(car => (
                 <tr key={car.Cid}>
                   <td><img src={car.Img100} alt={car.NameMMT} width="50" /></td>
                   <td>{car.NameMMT}</td>
@@ -99,14 +93,11 @@ function HighlightedCars() {
             </tbody>
           </table>
         ) : (
-          <>
-            <div style={{ height: '20px' }}></div> {/* Blank line */}
-            <p>No highlighted cars yet.</p>
-          </>
+          <p>No highlighted cars match your search.</p>
         )}
       </div>
 
-      {/* Car selection modal */}
+      {/* Car Selection Modal */}
       {showCarSelection && (
         <div className="modal-overlay" onClick={closeModal}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
@@ -126,26 +117,22 @@ function HighlightedCars() {
                     <th>Image</th>
                     <th>Name</th>
                     <th>Price</th>
-                    <th> </th>
+                    <th>Actions</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {Array.isArray(filteredCars) && filteredCars.length > 0 ? (
-                    filteredCars.map(car => (
-                      <tr key={car.Cid}>
-                        <td><img src={car.Img100} alt={car.NameMMT} width="50" /></td>
-                        <td>{car.NameMMT}</td>
-                        <td>{car.Prc}</td>
-                        <td>
-                          <button onClick={() => addCarToHighlight(car)}>Highlight</button>
-                        </td>
-                      </tr>
-                    ))
-                  ) : (
-                    <tr>
-                      <td colSpan="4">No cars match your search criteria.</td>
+                  {carData.Cars.filter(car =>
+                    car.NameMMT.toLowerCase().includes(searchQuery.toLowerCase())
+                  ).map(car => (
+                    <tr key={car.Cid}>
+                      <td><img src={car.Img100} alt={car.NameMMT} width="50" /></td>
+                      <td>{car.NameMMT}</td>
+                      <td>{car.Prc}</td>
+                      <td>
+                        <button onClick={() => addCarToHighlight(car)}>Highlight</button>
+                      </td>
                     </tr>
-                  )}
+                  ))}
                 </tbody>
               </table>
             </div>

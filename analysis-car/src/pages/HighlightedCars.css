@@ -12,18 +12,18 @@
 .remove-all-button, .add-button {
     padding: 0.75rem 1.5rem;
     font-size: 16px;
-    border-radius: 4px;
+    border-radius: 6px;
     cursor: pointer;
     transition: background-color 0.3s;
 }
 
 .remove-all-button {
-    background-color: #ff4c4c;
+    background-color: #f52944;
     color: white;
 }
 
 .remove-all-button:hover {
-    background-color: #d84343;
+    background-color: #d31e36;
 }
 
 /* Add button positioned in the upper right corner */
@@ -73,11 +73,11 @@
     background: #ff4c4c;
     color: white;
     border: none;
-    border-radius: 50%;
+    border-radius: 60%;
     width: 35px;
     height: 35px;
     cursor: pointer;
-    font-size: 18px;
+    font-size: 16px;
     text-align: center;
     line-height: 35px;
     transition: background-color 0.3s;
