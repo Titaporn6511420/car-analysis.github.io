@@ -123,7 +123,6 @@ const Dashboard = () => {
       </div>
       <div className="row">
         <div className="col-12">
-          <h3>Number of Cars and Values by Brands and Models</h3>
           <input
             type="text"
             className="form-control mb-4"
