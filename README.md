@@ -30,21 +30,21 @@ This project is a web application built with React, aimed at providing a market 
    
 2. **Go into the repository**
    
-  ```
-  cd car-analysis.github.io
-  cd analysis-car
-  ```
+    ```
+    cd car-analysis.github.io
+    cd analysis-car
+    ```
 3. **Go into the repository**
 
-```
+  ```
   pnpm install
   ```
 
 4. **Running the app**
 
-  ```
-  pnpm run dev
-  ```
+    ```
+    pnpm run dev
+    ```
 
 # Created By
 - Titaporn Tienanansuk repo:https://github.com/Titaporn6511420/Titaporn6511420.github.io.git
