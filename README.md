@@ -36,9 +36,9 @@ This project is a web application built with React, aimed at providing a market 
     ```
 3. **Go into the repository**
 
-  ```
-  pnpm install
-  ```
+    ```
+    pnpm install
+    ```
 
 4. **Running the app**
 
