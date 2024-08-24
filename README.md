@@ -1,4 +1,4 @@
-# Project-01 Car analysis
+# Project-01 Car analytics
 This project is a web application built with React, aimed at providing a market owner with insights and tools to manage their car inventory. The app features a dashboard with various data visualizations and a page for managing highlighted cars.
 
 ## Features
