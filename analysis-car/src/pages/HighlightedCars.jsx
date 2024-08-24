@@ -3,10 +3,10 @@ import carData from './taladrod-cars.min.json';
 import './HighlightedCars.css';
 
 const brands = [
-  "Highlighted Cars", // Updated tab name
-  "All", "HONDA", "NISSAN", "MAZDA", "TOYOTA", "BENZ", "VOLVO", 
-  "BMW", "SUZUKI", "ISUZU", "MG", "MITSUBISHI", "PORSCHE", 
-  "VOLKSWAGEN", "SUBARU", "LEXUS", "HYUNDAI", "FORD", "KIA", 
+  "Highlighted Cars",
+  "All", "HONDA", "NISSAN", "MAZDA", "TOYOTA", "BENZ", "VOLVO",
+  "BMW", "SUZUKI", "ISUZU", "MG", "MITSUBISHI", "PORSCHE",
+  "VOLKSWAGEN", "SUBARU", "LEXUS", "HYUNDAI", "FORD", "KIA",
   "FIAT", "MINI"
 ];
 
@@ -16,7 +16,7 @@ function HighlightedCars() {
     return storedCars ? JSON.parse(storedCars) : [];
   });
 
-  const [selectedBrand, setSelectedBrand] = useState('Highlighted Cars'); // Default to "Highlighted Cars"
+  const [selectedBrand, setSelectedBrand] = useState('Highlighted Cars');
   const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
@@ -40,19 +40,20 @@ function HighlightedCars() {
     setHighlightedCars([]);
   };
 
+  const isCarHighlighted = (carId) => {
+    return highlightedCars.some(highlightedCar => highlightedCar.Cid === carId);
+  };
+
   const filterCars = (car) => {
-    // Check if "Highlighted Cars" is selected
     if (selectedBrand === 'Highlighted Cars') {
       return highlightedCars.some(highlightedCar => highlightedCar.Cid === car.Cid);
     }
-    // Filter by selected brand or show all cars
     if (selectedBrand === 'All') {
       return true;
     }
     return car.NameMMT.toLowerCase().includes(selectedBrand.toLowerCase());
   };
 
-  // Filter cars based on the brand selection and search query
   const filteredCars = carData.Cars
     .filter(filterCars)
     .filter(car => car.NameMMT.toLowerCase().includes(searchQuery.toLowerCase()));
@@ -97,10 +98,14 @@ function HighlightedCars() {
                 <p><strong>Year:</strong> {car.Yr}</p>
                 <p><strong>Province:</strong> {car.Province}</p>
                 <p><strong>Views:</strong> {car.PageViews}</p>
-                {selectedBrand === 'Highlighted Cars' && highlightedCars.some(highlightedCar => highlightedCar.Cid === car.Cid) ? (
-                  <button className="remove-button" onClick={() => removeCarFromHighlighted(car.Cid)}>Remove</button>
+                {selectedBrand === 'Highlighted Cars' && isCarHighlighted(car.Cid) ? (
+                  <button className="remove-button" onClick={() => removeCarFromHighlighted(car.Cid)}>
+                    Remove
+                  </button>
                 ) : (
-                  <button className="highlight-button" onClick={() => addCarToHighlighted(car)}>Highlight</button>
+                  <button className="highlight-button" onClick={() => addCarToHighlighted(car)}>
+                    {isCarHighlighted(car.Cid) ? 'Added' : 'Highlight'}
+                  </button>
                 )}
               </div>
             </div>

@@ -27,24 +27,28 @@ This project is a web application built with React, aimed at providing a market 
 
    ```bash
    git clone https://github.com/Titaporn6511420/car-analysis.github.io.git
-   
+   ```
+
 2.**Go into the repository**
 
   ```bash
   cd car-analysis.github.io
   cd analysis-car
+  ```
 
 3.**Go into the repository**
 
   ```bash
   pnpm install
+  ```
 
 4.**Running the app**
 
   ```bash
   pnpm run dev
+  ```
 
 
 # Created By
 - Titaporn Tienanansuk repo:https://github.com/Titaporn6511420/Titaporn6511420.github.io.git
-- Sirinalin
+- Sirinalin Saekhow
