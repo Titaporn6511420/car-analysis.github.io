@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Bar, Pie } from 'react-chartjs-2';
 import 'chart.js/auto';
-import carData from './taladrod-cars.json'; // Adjust the path as needed
+import carData from './taladrod-cars.min.json'; // Adjust the path as needed
 
 const Dashboard = () => {
   const [cars, setCars] = useState([]);

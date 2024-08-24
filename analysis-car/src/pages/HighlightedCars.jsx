@@ -1,151 +1,119 @@
 import { useState, useEffect } from 'react';
-import carData from './taladrod-cars.json';
+import carData from './taladrod-cars.min.json';
 import './HighlightedCars.css';
 
+const brands = [
+  "Highlighted Cars", 
+  "All", "HONDA", "NISSAN", "MAZDA", "TOYOTA", "BENZ", "VOLVO", 
+  "BMW", "SUZUKI", "ISUZU", "MG", "MITSUBISHI", "PORSCHE", 
+  "VOLKSWAGEN", "SUBARU", "LEXUS", "HYUNDAI", "FORD", "KIA", 
+  "FIAT", "MINI"
+];
+
 function HighlightedCars() {
-  const [highlightedCars, setHighlightedCars] = useState(() => {
-    const storedCars = localStorage.getItem('highlightedCars');
-    console.log("Loaded from localStorage:", storedCars); // Debugging line
+  const [blackCars, setBlackCars] = useState(() => {
+    const storedCars = localStorage.getItem('blackCars');
     return storedCars ? JSON.parse(storedCars) : [];
   });
 
-  const [showCarSelection, setShowCarSelection] = useState(false);
+  const [selectedBrand, setSelectedBrand] = useState('Black'); // Default to "Black"
   const [searchQuery, setSearchQuery] = useState('');
-  const [error, setError] = useState(null);
 
-  // Save highlighted cars to localStorage whenever they change
   useEffect(() => {
-    console.log("Saving to localStorage:", highlightedCars); // Debugging line
-    localStorage.setItem('highlightedCars', JSON.stringify(highlightedCars));
-  }, [highlightedCars]);
+    localStorage.setItem('blackCars', JSON.stringify(blackCars));
+  }, [blackCars]);
 
-  // Add car to highlighted list
-  const addCarToHighlight = (car) => {
-    setHighlightedCars((prevCars) => {
-      const carExists = prevCars.some((highlightedCar) => highlightedCar.Cid === car.Cid);
-      if (!carExists) {
+  const addCarToBlack = (car) => {
+    setBlackCars((prevCars) => {
+      if (!prevCars.some(blackCar => blackCar.Cid === car.Cid)) {
         return [...prevCars, car];
       }
       return prevCars;
     });
-    setShowCarSelection(false);
   };
 
-  // Remove car from highlighted list
-  const removeCarFromHighlight = (carId) => {
-    setHighlightedCars((prevCars) => prevCars.filter(car => car.Cid !== carId));
+  const removeCarFromBlack = (carId) => {
+    setBlackCars((prevCars) => prevCars.filter(car => car.Cid !== carId));
   };
 
-  // Remove all cars from highlighted list
-  const removeAllCars = () => {
-    setHighlightedCars([]); // This will also clear the localStorage due to useEffect
+  const removeAllCarsFromBlack = () => {
+    setBlackCars([]);
   };
 
-  // Close the car selection modal
-  const closeModal = () => {
-    setShowCarSelection(false);
+  const filterCars = (car) => {
+    // Check if "Black" is selected
+    if (selectedBrand === 'Black') {
+      return blackCars.some(blackCar => blackCar.Cid === car.Cid);
+    }
+    // Filter by selected brand or show all cars
+    if (selectedBrand === 'All') {
+      return true;
+    }
+    return car.NameMMT.toLowerCase().includes(selectedBrand.toLowerCase());
   };
 
-  // Filter highlighted cars based on search query
-  const filteredCars = highlightedCars.filter(car =>
-    car.NameMMT.toLowerCase().includes(searchQuery.toLowerCase())
-  );
-
-  if (error) {
-    return <div>Error: {error}</div>;
-  }
+  // Filter cars based on the brand selection and search query
+  const filteredCars = carData.Cars
+    .filter(filterCars)
+    .filter(car => car.NameMMT.toLowerCase().includes(searchQuery.toLowerCase()));
 
   return (
-    <div className="container">
+    <div className="highlighted-cars-container">
       <h2>Highlighted Cars</h2>
 
-      {/* Control Buttons */}
-      <div className="control-buttons" style={{ marginBottom: '20px' }}>
-        <button className="remove-all-button" style={{ marginRight: '20px' }} onClick={removeAllCars}>Remove All</button>
-        <button className="add-button" onClick={() => setShowCarSelection(true)}>Add</button>
+      {/* Brand Tabs */}
+      <div className="brand-tabs">
+        {brands.map(brand => (
+          <button
+            key={brand}
+            className={`brand-tab ${selectedBrand === brand ? 'active' : ''}`}
+            onClick={() => setSelectedBrand(brand)}
+          >
+            {brand}
+          </button>
+        ))}
       </div>
+
+      <br />
 
       {/* Search Bar */}
       <input
         type="text"
         className="form-control mb-4"
-        style={{ marginTop: '10px' }}
         placeholder="Search highlighted cars..."
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}
       />
 
-      {/* Highlighted Cars Table */}
-      <div className="table-container">
+      {/* Car Cards */}
+      <div className="card-grid">
         {filteredCars.length > 0 ? (
-          <table>
-            <thead>
-              <tr>
-                <th>Image</th>
-                <th>Name</th>
-                <th>Price</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredCars.map(car => (
-                <tr key={car.Cid}>
-                  <td><img src={car.Img100} alt={car.NameMMT} width="50" /></td>
-                  <td>{car.NameMMT}</td>
-                  <td>{car.Prc}</td>
-                  <td>
-                    <button onClick={() => removeCarFromHighlight(car.Cid)}>Remove</button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          filteredCars.map(car => (
+            <div key={car.Cid} className="car-card">
+              <img src={car.Img600} alt={car.NameMMT} className="car-image" />
+              <div className="car-details">
+                <h3>{car.NameMMT}</h3>
+                <p><strong>Price:</strong> {car.Prc}</p>
+                <p><strong>Year:</strong> {car.Yr}</p>
+                <p><strong>Province:</strong> {car.Province}</p>
+                <p><strong>Views:</strong> {car.PageViews}</p>
+                {selectedBrand === 'Black' && blackCars.some(blackCar => blackCar.Cid === car.Cid) ? (
+                  <button className="remove-button" onClick={() => removeCarFromBlack(car.Cid)}>Remove</button>
+                ) : (
+                  <button className="highlight-button" onClick={() => addCarToBlack(car)}>Highlight</button>
+                )}
+              </div>
+            </div>
+          ))
         ) : (
-          <p>No highlighted cars match your search.</p>
+          <p>No highlighted cars.</p>
         )}
       </div>
 
-      {/* Car Selection Modal */}
-      {showCarSelection && (
-        <div className="modal-overlay" onClick={closeModal}>
-          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            <button className="close-button" onClick={closeModal}>X</button>
-            <h3>Select Cars to Highlight</h3>
-            <input
-              type="text"
-              className="form-control mb-4"
-              placeholder="Search by name..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
-            <div className="table-container">
-              <table>
-                <thead>
-                  <tr>
-                    <th>Image</th>
-                    <th>Name</th>
-                    <th>Price</th>
-                    <th>Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {carData.Cars.filter(car =>
-                    car.NameMMT.toLowerCase().includes(searchQuery.toLowerCase())
-                  ).map(car => (
-                    <tr key={car.Cid}>
-                      <td><img src={car.Img100} alt={car.NameMMT} width="50" /></td>
-                      <td>{car.NameMMT}</td>
-                      <td>{car.Prc}</td>
-                      <td>
-                        <button onClick={() => addCarToHighlight(car)}>Highlight</button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
+      {selectedBrand === 'Black' && blackCars.length > 0 && (
+        <button className="remove-all-button" onClick={removeAllCarsFromBlack}>
+          Remove All
+        </button>
       )}
     </div>
   );

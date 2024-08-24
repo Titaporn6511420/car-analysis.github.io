@@ -1,140 +1,111 @@
-/* Container for layout positioning */
-.container {
-    max-width: 1200px;
-    margin: 3.6%;
-    padding: 4rem;
-    background-color: #f9f9f9;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-}
-
-/* Remove All button positioned in the upper left corner */
-.remove-all-button, .add-button {
-    padding: 0.75rem 1.5rem;
-    font-size: 16px;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-.remove-all-button {
-    background-color: #f52944;
-    color: white;
-}
-
-.remove-all-button:hover {
-    background-color: #d31e36;
-}
-
-/* Add button positioned in the upper right corner */
-.add-button {
-    background-color: #4caf50;
-    color: white;
-}
-
-.add-button:hover {
-    background-color: #3e8e41;
-}
-
-/* Modal overlay - covering the entire screen and allowing for scrolling */
-.modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgb(255, 255, 255); 
-    display: flex;
-    align-items: center; /* Center modal vertically */
-    justify-content: center; /* Center modal horizontally */
-    z-index: 1000;
-    overflow-y: auto; /* Allow scrolling inside the modal */
-}
-
-/* Modal content - centered and with a set max-height */
-.modal-content {
-    background-color: #fff;
+.highlighted-cars-container {
     padding: 20px;
-    border-radius: 8px;
-    width: 90%; /* Adjusted width for better appearance */
-    max-width: 900px; /* Maximum width of the modal */
-    max-height: 80vh; /* Ensure modal doesn't take up entire height */
-    overflow-y: auto; /* Scrollable content inside the modal */
-    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.2); /* Slightly darker shadow */
-    position: relative;
-}
-
-/* Close button (X) */
-.close-button {
-    position: sticky; /* Make the button sticky */
-    top: 10px;
-    right: 10px;
-    margin-left: auto; /* Align to the right inside modal content */
-    background: #ff4c4c;
-    color: white;
-    border: none;
-    border-radius: 60%;
-    width: 35px;
-    height: 35px;
+  }
+  
+  .brand-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px; /* Space between buttons */
+    margin: 0;
+  }
+  
+  .brand-tab {
+    padding: 10px 15px;
+    margin: 0;
     cursor: pointer;
-    font-size: 16px;
-    text-align: center;
-    line-height: 35px;
-    transition: background-color 0.3s;
-    z-index: 2; /* Ensure the button is above other content */
-}
-
-.close-button:hover {
-    background-color: #d84343;
-}
-
-/* Table container */
-.table-container {
-    max-height: 400px; /* Adjust based on your needs */
-    overflow-y: auto; /* Allow vertical scrolling */
-}
-
-/* Table styling */
-table {
+    background-color: #333;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .brand-tab.active {
+    background-color: #007bff;
+    color: white;
+  }
+  
+  .form-control {
     width: 100%;
-    border-collapse: collapse;
-    margin-top: 1rem;
-    font-size: 16px;
-}
-
-thead th {
-    background-color: #4caf50;
-    color: white;
-    padding: 0.75rem;
-    position: sticky; /* Make the header sticky */
-    top: 0; /* Position it at the top of the scrolling container */
-    z-index: 1; /* Ensure it stays on top of the table rows */
-}
-
-tbody td {
-    padding: 0.75rem;
-    text-align: center;
-}
-
-tbody tr:nth-child(even) {
-    background-color: #f2f2f2;
-}
-
-tbody tr:hover {
-    background-color: #ddd;
-}
-
-/* Button inside table */
-tbody td button {
-    padding: 0.5rem 1rem;
-    background-color: #ff4c4c;
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+  }
+  
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+  }
+  
+  .car-card {
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 15px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  
+  .car-image {
+    width: 100%; /* Ensure the image takes up the full width of the card */
+    height: 200px; /* Set a consistent height for all images */
+    object-fit: cover; /* Ensures that the images maintain their aspect ratio and are cropped if needed */
+    border-radius: 10px;
+    margin-bottom: 15px;
+  }
+  
+  .car-details h3 {
+    font-size: 18px;
+    margin-bottom: 10px;
+  }
+  
+  .car-details p {
+    margin: 5px 0;
+    font-size: 14px;
+  }
+  
+  .car-details .highlight-button {
+    padding: 10px;
+    margin-top: 10px;
+    background-color: #28a745;
     color: white;
     border: none;
-    border-radius: 4px;
+    border-radius: 5px;
     cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-tbody td button:hover {
-    background-color: #d84343;
-}
+  }
+  
+  .car-details .highlight-button:hover {
+    background-color: #218838;
+  }
+  
+  .car-details .remove-button {
+    padding: 10px;
+    margin-top: 10px;
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .car-details .remove-button:hover {
+    background-color: #c82333;
+  }
+  
+  .remove-all-button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .remove-all-button:hover {
+    background-color: #c82333;
+  }
