@@ -106,6 +106,21 @@ const Dashboard = () => {
   return (
     <div className="container mt-5">
       <h1 className="text-center mb-4">Car Dashboard</h1>
+      <h3>Number of Cars and Values by Brands and Models</h3>
+      <div className="row mt-5">
+        <div className="col-12 col-md-6 mb-4">
+          <h3 className="text-center">Portion of Cars by Brand (Pie Chart)</h3>
+          <div className="chart-container">
+            <Pie data={pieChartData} />
+          </div>
+        </div>
+        <div className="col-12 col-md-6 mb-4">
+          <h3 className="text-center">Models of a Brand (Stacked Bar Chart)</h3>
+          <div className="chart-container" style={{ height: '400px' }}>
+            <Bar data={stackedBarChartData} options={barChartOptions} />
+          </div>
+        </div>
+      </div>
       <div className="row">
         <div className="col-12">
           <h3>Number of Cars and Values by Brands and Models</h3>
@@ -130,20 +145,6 @@ const Dashboard = () => {
                 {tableRows}
               </tbody>
             </table>
-          </div>
-        </div>
-      </div>
-      <div className="row mt-5">
-        <div className="col-12 col-md-6 mb-4">
-          <h3 className="text-center">Portion of Cars by Brand (Pie Chart)</h3>
-          <div className="chart-container">
-            <Pie data={pieChartData} />
-          </div>
-        </div>
-        <div className="col-12 col-md-6 mb-4">
-          <h3 className="text-center">Models of a Brand (Stacked Bar Chart)</h3>
-          <div className="chart-container" style={{ height: '400px' }}>
-            <Bar data={stackedBarChartData} options={barChartOptions} />
           </div>
         </div>
       </div>
