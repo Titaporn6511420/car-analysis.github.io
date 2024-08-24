@@ -14,11 +14,9 @@ const Dashboard = () => {
 
   // Process data to group by brand and model
   const processedCarData = cars.reduce((acc, car) => {
-    // Extract brand and model from NameMMT
     const [brand, ...modelParts] = car.NameMMT.split(' ');
     const model = modelParts.join(' ');
 
-    // Convert price from string to number
     const price = parseFloat(car.Prc.replace(/,/g, ''));
 
     if (!acc[brand]) {
@@ -46,14 +44,12 @@ const Dashboard = () => {
   const filteredBrandValues = filteredBrandLabels.map(brand => processedCarData[brand].totalValue);
 
   const tableRows = filteredBrandLabels.flatMap((brand, index) => [
-    // Row for the brand totals
     <tr key={`${brand}-total`}>
       <td>{brand}</td>
       <td><strong>Total</strong></td>
       <td><strong>{processedCarData[brand].totalCars}</strong></td>
       <td><strong>{processedCarData[brand].totalValue.toLocaleString()} Baht</strong></td>
     </tr>,
-    // Rows for the individual models
     ...Object.keys(processedCarData[brand].models).map((model, modelIndex) => (
       <tr key={`${brand}-${modelIndex}`}>
         <td>{brand}</td>
@@ -82,10 +78,10 @@ const Dashboard = () => {
   };
 
   const colors = [
-    'rgba(122, 223, 207)', // Color 1
-    'rgba(255, 195, 0)',   // Color 2
-    'rgba(218, 247, 166)',  // Color 3
-    'rgba(150, 200, 236)',  // Color 4
+    'rgba(122, 223, 207)',
+    'rgba(255, 195, 0)',
+    'rgba(218, 247, 166)',
+    'rgba(150, 200, 236)',
     'rgba(244, 163, 209)',
   ];
 
@@ -99,7 +95,7 @@ const Dashboard = () => {
   };
 
   const barChartOptions = {
-    maintainAspectRatio: false, // Allow chart to resize based on container size
+    maintainAspectRatio: false,
     responsive: true,
     scales: {
       x: { stacked: true },
@@ -111,7 +107,7 @@ const Dashboard = () => {
     <div className="container mt-5">
       <h1 className="text-center mb-4">Car Dashboard</h1>
       <div className="row">
-        <div className="col-md-12">
+        <div className="col-12">
           <h3>Number of Cars and Values by Brands and Models</h3>
           <input
             type="text"
@@ -120,8 +116,8 @@ const Dashboard = () => {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
-          <div className="table-container" style={{ maxHeight: '500px', overflowY: 'auto' }}> {/* Container with fixed height */}
-            <table className="table table-striped">
+          <div className="table-container" style={{ maxHeight: '500px', overflowY: 'auto' }}>
+            <table className="table table-striped table-responsive">
               <thead>
                 <tr>
                   <th>Brand</th>
@@ -137,16 +133,16 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
-      <div className="row mt-5 justify-content-center">
-        <div className="col-md-6 d-flex flex-column align-items-center">
-          <h3>Portion of Cars by Brand (Pie Chart)</h3>
-          <Pie data={pieChartData} />
+      <div className="row mt-5">
+        <div className="col-12 col-md-6 mb-4">
+          <h3 className="text-center">Portion of Cars by Brand (Pie Chart)</h3>
+          <div className="chart-container">
+            <Pie data={pieChartData} />
+          </div>
         </div>
-      </div>
-      <div className="row mt-5 justify-content-center">
-        <div className="col-md-6 d-flex flex-column align-items-center" style={{ height: '500px' }}> {/* Container with fixed height */}
-          <h3>Models of a Brand (Stacked Bar Chart)</h3>
-          <div style={{ width: '150%', height: '200%' }}>
+        <div className="col-12 col-md-6 mb-4">
+          <h3 className="text-center">Models of a Brand (Stacked Bar Chart)</h3>
+          <div className="chart-container" style={{ height: '400px' }}>
             <Bar data={stackedBarChartData} options={barChartOptions} />
           </div>
         </div>

@@ -3,19 +3,27 @@ import carData from './taladrod-cars.json';
 import './HighlightedCars.css';
 
 function HighlightedCars() {
-  const [highlightedCars, setHighlightedCars] = useState([]);
+  const [highlightedCars, setHighlightedCars] = useState(() => {
+    const storedCars = localStorage.getItem('highlightedCars');
+    console.log("Loaded from localStorage:", storedCars); // Debugging line
+    return storedCars ? JSON.parse(storedCars) : [];
+  });
+
   const [showCarSelection, setShowCarSelection] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [error, setError] = useState(null);
 
-  // Load highlighted cars from localStorage
-
   // Save highlighted cars to localStorage whenever they change
+  useEffect(() => {
+    console.log("Saving to localStorage:", highlightedCars); // Debugging line
+    localStorage.setItem('highlightedCars', JSON.stringify(highlightedCars));
+  }, [highlightedCars]);
 
   // Add car to highlighted list
   const addCarToHighlight = (car) => {
     setHighlightedCars((prevCars) => {
-      if (!prevCars.some((highlightedCar) => highlightedCar.Cid === car.Cid)) {
+      const carExists = prevCars.some((highlightedCar) => highlightedCar.Cid === car.Cid);
+      if (!carExists) {
         return [...prevCars, car];
       }
       return prevCars;
@@ -30,7 +38,7 @@ function HighlightedCars() {
 
   // Remove all cars from highlighted list
   const removeAllCars = () => {
-    setHighlightedCars([]);
+    setHighlightedCars([]); // This will also clear the localStorage due to useEffect
   };
 
   // Close the car selection modal
@@ -53,7 +61,7 @@ function HighlightedCars() {
 
       {/* Control Buttons */}
       <div className="control-buttons" style={{ marginBottom: '20px' }}>
-        <button className="remove-all-button" style={{marginRight:'20px'}} onClick={removeAllCars}>Remove All</button>
+        <button className="remove-all-button" style={{ marginRight: '20px' }} onClick={removeAllCars}>Remove All</button>
         <button className="add-button" onClick={() => setShowCarSelection(true)}>Add</button>
       </div>
 
