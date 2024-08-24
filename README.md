@@ -7,6 +7,8 @@ This project is a web application built with React, aimed at providing a market 
   - Displays a table of cars grouped by brand and model.
   - Pie chart visualizing the distribution of cars by brand.
   - Stacked bar chart showing the distribution of models within each brand.
+    <img src= ./web pic/dashboard.png>
+    <img src= ./web pic/table.png>
 
 - **Highlighted Cars Page**
   - Allows selection and management of highlighted cars.
