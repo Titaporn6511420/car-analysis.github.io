@@ -40,10 +40,11 @@ This project is a web application built with React, aimed at providing a market 
     cd car-analysis.github.io
     cd analysis-car
     ```
-3. **Go into the repository**
+3. **Install dependencies**
 
     ```
     pnpm install
+    pmpn add react-use
     ```
 
 4. **Running the app**
