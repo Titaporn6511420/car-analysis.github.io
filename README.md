@@ -14,7 +14,7 @@ This project is a web application built with React, aimed at providing a market 
  
 ## Tech Stack
 
-- **React**: JavaScript library for building user interfaces.
+- **React + Vite**: JavaScript library for building user interfaces.
 - **Bootstrap**: CSS framework for styling the web app.
 - **React Bootstrap**: Bootstrap components built with React.
 - **Chart.js**: JavaScript library for data visualization.
