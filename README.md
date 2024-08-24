@@ -29,20 +29,20 @@ This project is a web application built with React, aimed at providing a market 
    git clone https://github.com/Titaporn6511420/car-analysis.github.io.git
    ```
 
-2.**Go into the repository**
+2. **Go into the repository**
 
   ```
   cd car-analysis.github.io
   cd analysis-car
   ```
 
-3.**Go into the repository**
+3. **Go into the repository**
 
   ```
   pnpm install
   ```
 
-4.**Running the app**
+4. **Running the app**
 
   ```
   pnpm run dev
