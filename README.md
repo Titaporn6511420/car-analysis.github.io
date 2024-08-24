@@ -28,7 +28,6 @@ This project is a web application built with React, aimed at providing a market 
    ```
    git clone https://github.com/Titaporn6511420/car-analysis.github.io.git
    ```
-
 2. **Go into the repository**
 
   ```
@@ -46,9 +45,7 @@ This project is a web application built with React, aimed at providing a market 
 
   ```
   pnpm run dev
-
   ```
-
 
 # Created By
 - Titaporn Tienanansuk repo:https://github.com/Titaporn6511420/Titaporn6511420.github.io.git
