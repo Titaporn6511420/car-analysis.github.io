@@ -53,5 +53,5 @@ This project is a web application built with React, aimed at providing a market 
     ```
 
 # Created By
-- Titaporn Tienanansuk repo:https://github.com/Titaporn6511420/Titaporn6511420.github.io.git
-- Sirinalin Saekhow
+- Titaporn Tienanansuk Github:https://github.com/Titaporn6511420
+- Sirinalin Saekhow Github:https://github.com/Sirinalin
