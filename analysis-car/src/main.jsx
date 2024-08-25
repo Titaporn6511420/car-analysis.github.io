@@ -20,7 +20,7 @@ const router = createBrowserRouter(
           element: <Dashboard />,
         },
         {
-          path: '/Hightlighted',
+          path: '/Hightlight',
           element: <HighlightedCars/>,
         },
       ],
