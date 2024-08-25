@@ -1,6 +1,8 @@
 # Project-01 Car analytics
 This project is a web application built with React, aimed at providing a market owner with insights and tools to manage their car inventory. The app features a dashboard with various data visualizations and a page for managing highlighted cars.
 
+https://titaporn6511420.github.io/car-analytics
+
 ## Preview
 <img src='https://github.com/Titaporn6511420/car-analysis.github.io/blob/main/recordd.gif?raw=true' alt="screenshot" width="750" height="400/">
 
@@ -52,7 +54,6 @@ This project is a web application built with React, aimed at providing a market 
     ```
     pnpm run dev
     ```
-
 # Created By
 - Titaporn Tienanansuk Github:https://github.com/Titaporn6511420
 - Sirinalin Saekhow Github:https://github.com/Sirinalin
