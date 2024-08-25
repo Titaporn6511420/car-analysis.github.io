@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, Link, Navigate } from 'react-router-dom';
 import Dashboard from './pages/Dashboard';
 import HighlightedCars from './pages/HighlightedCars';
 import './App.css'; // Import the updated CSS
@@ -16,6 +16,9 @@ function App() {
         {/* Define routes */}
         <Route path="/" element={<Dashboard />} />
         <Route path="/highlighted-cars" element={<HighlightedCars />} />
+        
+        {/* Fallback route to redirect any unmatched paths to Dashboard */}
+        <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </Router>
   );
