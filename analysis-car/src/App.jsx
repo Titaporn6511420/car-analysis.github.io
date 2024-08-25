@@ -8,13 +8,13 @@ function App() {
     <Router>
       <div className="navbar">
         {/* Clickable navigation links */}
-        <Link to="/" className="nav-link">Dashboard</Link>
+        <Link to="/dashboard" className="nav-link">Dashboard</Link>
         <Link to="/highlighted-cars" className="nav-link">Highlighted Cars</Link>
       </div>
       
       <Routes>
         {/* Define routes */}
-        <Route path="/" element={<Dashboard />} />
+        <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/highlighted-cars" element={<HighlightedCars />} />
         
         {/* Fallback route to redirect any unmatched paths to Dashboard */}
