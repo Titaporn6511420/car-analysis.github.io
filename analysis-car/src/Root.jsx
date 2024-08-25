@@ -1,7 +1,6 @@
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
-import NavDropdown from "react-bootstrap/NavDropdown";
 import { Link, NavLink } from "react-router-dom";
 import { Outlet } from "react-router-dom";
 import './App.css';
@@ -17,7 +16,7 @@ function Root() {
               <Nav.Link as={NavLink} to="/" exact activeClassName="active">
               Dashboard
               </Nav.Link>
-              <Nav.Link as={NavLink} to="/hightlight" activeClassName="active">
+              <Nav.Link as={NavLink} to="/highlight" activeClassName="active">
                 Highlighted Cars
               </Nav.Link>
             </Nav>
